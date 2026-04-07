@@ -105,14 +105,14 @@ Sentinel sentinels[8] = {
 		"[getYesNoValidation]"
 	},
 	{
-		"The ___ ____", // Amolika
-		"[greeting]",
-        "[Intro Dialogue]",
+		"The Midnight Snake", // Amolika
+		"Welcome, wanderer. Beware… the snake watches all.",
+        "Few dare tread these shadowed paths… and fewer still encounter the serpent that dwells within. Speak carefully, for the snake senses truth from lies.",
 		"What is Amolika's dream travel destination?",
 		"Japan.",
 		"Europe.",
-		"[correctLine]",
-		"[wrongLine]",
+		"Ah ha! You are correct. Darkness whispers its approval.",
+		"Uh oh.. you're mistaken! The shadows frown, your answer fails to satisfy the snake.",
 		"[getYesNoValidation]"
 	},
 	{
