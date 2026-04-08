@@ -113,7 +113,7 @@ Sentinel sentinels[8] = {
 		"Europe.",
 		"Ah ha! You are correct. Darkness whispers its approval.",
 		"Uh oh.. you're mistaken! The shadows frown, your answer fails to satisfy the snake.",
-		"[getYesNoValidation]"
+		"Give an answer"
 	},
 	{
 		"The ____ ____", // Hania
