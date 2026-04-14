@@ -1,44 +1,156 @@
 #include <iostream>
+// #include <cstdlib>
+// #include <ctime>
 using namespace std;
 
-class CaesarCipher() {
+class CaesarCipher {
 private:
 int shiftValue;
 
+
 protected:
-string encode(string message, int shiftValue){
-        string words = "";
-        for (char letter: message){
-            if(letter >= 'a' && letter <= 'z'){
-                int newletter = ((int(letter) - 'a' + shiftValue) % 26) + 'a';
-                words += (char)newletter;
+    string encode(const string& message) {
+            string words = "";
+            for (char letter: message){
+                if(letter >= 'a' && letter <= 'z'){
+                    int newletter = ((int(letter) - 'a' + shiftValue) % 26) + 'a';
+                    words += (char)newletter;
+                }
+                else if(letter >= 'A' && letter <= 'Z') {
+                    int newletter = ((int(letter) - 'A' + shiftValue) % 26) + 'A';
+                    words += (char)newletter;
+                }
+                else {
+                    words += letter;
+                }   
             }
-            else if(letter >= 'A' && letter <= 'Z') {
-                int newletter = ((int(letter) - 'A' + shiftValue) % 26) + 'A';
-                words += (char)newletter;
-            }
-            else {
-                words += letter;
-            }
-        }
         return words;
     }
 
-
 public:
-void setShiftValue(int value) {
-    //filler
-}
-string decode(const string& message) {
-    //takes shift value and subtracts 26
-    int shift = 26 - shiftValue;
-    encode(message, shift)
-}
-
-class Rot13Cipher : public CaesarCipher{
-
+    void setShiftValue(int value) {
+        shiftValue = value;
+    }
+    
+    int getShiftValue(){
+        return shiftValue;
+    }
+    
+    string decode(const string& message) {
+        return encode(message);
+    }
 };
 
-int main() {
+class Rot13Cipher : public CaesarCipher{
+    public:
+    Rot13Cipher() {
+        setShiftValue(13);
+    }
+};
 
+void triesCounter(string message) {
+    int tries = 3;
+    string userDecodedMessage;
+
+    for (int i = 0; i < 3; i++) {
+    cout << "Enter the decoded message: ";
+    getline(cin, userDecodedMessage);
+    cout << "You entered: '" << userDecodedMessage << "'" << endl;;
+    if (message != userDecodedMessage) {
+         tries --;
+        if (tries == 1) {
+            cout << "Yikes! That's incorrect. You have " << tries << " more try." << endl;
+        }
+        else{
+        cout << "Yikes! That's incorrect. You have " << tries << " more tries." << endl;
+        }
+        if (tries == 0) {
+            cout << "You've used up all your tries. Game over!" << endl;
+        }
+    }
+    else {
+        cout << "The decoded message is: '" << message << "' \nYou got it!" << endl;
+        break;
+        }
+    }
+
+};
+string getValidMessage() {
+    string message;
+    bool hasError;
+
+    do{
+        hasError =false; 
+        cout<< "Enter the message to be encoded (Letters and spaces only): ";
+        getline(cin>> ws, message);
+        for (int i =0; i< message.length(); i++) {
+            char c =message[i];
+            if (!isalpha(c) && !isspace(c)) {
+                hasError=true;
+                break;
+            }
+        }
+        if (hasError) {
+            cout<<"Invalid message! No numbers or symbols allowed."<< endl;
+        }
+    } while (hasError ==true);
+    return message;
+};
+
+int getValidNum(int min, int max) {
+    int choice;
+    while(true){
+        cout<< "Enter a shift value (1-13) to encode the message accordingly: ";
+        if (cin>>choice){
+            if (choice >= min && choice <= max) {
+                return choice;
+            }else{
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
+        }
+        cout<< "Invalid input. Please try again." <<endl;
+    }
+};
+    
+string getYesNo() {
+    string input;
+    while(true){
+        cin >> input;
+        for (char& c : input) c = tolower(c);
+    if (input == "yes" || input == "no") {
+        return input;
+    }
+    cout << "Please enter either yes or no" << endl;
+    }
+}; 
+
+// int getRandomShift(int max) {
+//     srand(time(0));
+//     return rand() % max;
+// }
+int main() {
+    // Choice variables
+    string userMessage;
+    string encodeChoice;
+    string shiftChoice;
+    int shiftValue;
+    int min = 1;
+    int max = 13;
+
+    cout << "-----------------Welcome to the Caesar Cipher Program!-----------------" << endl;
+    cout << "Do you want to encode a new message? (y/n or yes/no): ";
+    encodeChoice = getYesNo();
+    do { // User input/choice menu to encode the user's message (if they say yes)
+    userMessage = getValidMessage();
+    cout << "Do you want to encode the message with a randomizeed shift value (1-13)? (y/n or yes/no): ";
+    getYesNo();
+    shiftValue= getValidNum(min, max);
+    CaesarCipher cipher;
+    cipher.setShiftValue(shiftValue);
+    string encryptedMessage = cipher.decode(userMessage);
+    cout << "Encrypted Message: " << encryptedMessage << endl;
+    cout << "Do you want to encode a new message? (y/n or yes/no): ";
+    encodeChoice = getYesNo();
+    } while (encodeChoice == "y" || encodeChoice == "yes");
 }
